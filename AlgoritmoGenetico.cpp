@@ -67,28 +67,32 @@ int Roleta(vector<float> fitnes){
     vector<float> numerosDaSorte = somaCumulativa(fitnes);
     
 	srand(time(NULL));
-    vector<int> numInt;
-    //cout << "aqui 1" << endl;
+    /*
+    //vector<int> numInt;
+    
     for(int i = 0;i<numerosDaSorte.size();i++){
         numInt.push_back(100*numerosDaSorte[i]);
-        //cout << 100*numerosDaSorte[i] << " ";
-        //cout << numInt[i]<< " ";
-    }
-	int random;
-    random = numInt.back();
-    p = (rand() % random)+1;
-    cout << "randomico "<< p <<endl;
+        
+    }*/
+	float random;
+    random = numerosDaSorte.back();
+    //cout << numerosDaSorte.back() << endl;
+    //cout << random << endl;
+    float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX/random+1);
+    cout <<  "valor r: " << r << endl;
+    //p = (rand() % random)+1;
+    //cout << "randomico "<< p <<endl;
 	sorteado = -1;
     
 	for(int i=0;i<numerosDaSorte.size();i++){
-		if(numInt[i] > p){
+		if(numerosDaSorte[i] > r){
 			sorteado = i;
 			break;
 		}
 	}
     numerosDaSorte.clear();
-    numInt.clear();
-    cout << "sort "<< sorteado <<endl;
+    //numInt.clear();
+    //cout << "sort "<< sorteado <<endl;
     return sorteado;
 
 }
@@ -96,7 +100,7 @@ int Roleta(vector<float> fitnes){
 // constroi o range da roleta
 vector<float> somaCumulativa(vector<float> v){
     
-    std::vector<float> acumulacao;
+    vector<float> acumulacao;
     acumulacao.push_back(v[0]);
     for(int i=0; i<v.size()-1;i++){
         acumulacao.push_back(acumulacao[0+i]+v[1+i]);
