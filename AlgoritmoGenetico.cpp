@@ -8,10 +8,15 @@ using namespace std;
 
 int Roleta(vector<float> fitnes);
 
+int gerarAleatorio(int valorInicial, int valorFinal);
+
 vector<float> somaCumulativa(vector<float> v);
 
 
 int main(){
+    // semente
+    srand (static_cast <unsigned> (time(0)));
+
 	int n=10, popSize=5;
     vector<vector<int>> populacao;
     vector<vector<int>> novaGeracao;
@@ -38,16 +43,23 @@ int main(){
         copfitness.push_back(fitness[i]);
     }
 
-    for(int i=0;i<copfitness.size()/2;i++){
+    //cout << "sise copfitness: " << copfitness.size()/2 <<endl;
 
+    
+    for(int i=0;i<=copfitness.size()/2;i++){
+
+        cout << "indo p/ Roleta: " << i << endl;
+   
     		sorteado = Roleta(copfitness);
             sort.push_back(sorteado);
             copfitness.insert(copfitness.begin()+ sorteado,0);
+            copfitness.erase(copfitness.begin()+ sorteado);
     		
     		sorteado = Roleta(copfitness);
             
             sort.push_back(sorteado);
             copfitness.insert(copfitness.begin() + sorteado,0);
+            copfitness.erase(copfitness.begin()+ sorteado);
     		indCruza.push_back(sort);
             sort.clear(); 
     }
@@ -66,22 +78,13 @@ int Roleta(vector<float> fitnes){
     int p;
     vector<float> numerosDaSorte = somaCumulativa(fitnes);
     
-	srand(time(NULL));
-    /*
-    //vector<int> numInt;
-    
-    for(int i = 0;i<numerosDaSorte.size();i++){
-        numInt.push_back(100*numerosDaSorte[i]);
-        
-    }*/
+
 	float random;
     random = numerosDaSorte.back();
-    //cout << numerosDaSorte.back() << endl;
-    //cout << random << endl;
+    
     float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX/random+1);
     cout <<  "valor r: " << r << endl;
-    //p = (rand() % random)+1;
-    //cout << "randomico "<< p <<endl;
+    
 	sorteado = -1;
     
 	for(int i=0;i<numerosDaSorte.size();i++){
@@ -107,4 +110,13 @@ vector<float> somaCumulativa(vector<float> v){
     }
     return acumulacao;
 
+}
+
+// Referência https://www.cplusplus.com/reference/random/
+int gerarAleatorio(int valorInicial, int valorFinal){
+  random_device semente;
+  default_random_engine gerador(semente());
+  uniform_int_distribution<default_random_engine::result_type> intervalo(valorInicial, valorFinal); 
+
+  return intervalo(gerador);
 }
